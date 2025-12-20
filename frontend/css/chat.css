@@ -1,0 +1,249 @@
+/* chat.css - 聊天界面相关样式 */
+
+/* ===== 聊天头部 ===== */
+.chat-header {
+    padding: 25px 30px;
+    background: rgba(255, 255, 255, 0.1); 
+    border-bottom: 1px solid rgba(238, 242, 247, 0.2);
+    font-weight: 700;
+    font-size: 20px;
+    color: #2c3e50;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* ===== 消息区域 ===== */
+.messages-box {
+    flex: 1;
+    overflow-y: auto;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    background: rgba(248, 250, 252, 0.1);
+}
+
+/* 自定义滚动条 */
+.messages-box::-webkit-scrollbar {
+    width: 6px;
+}
+
+.messages-box::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.messages-box::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 10px;
+}
+
+/* ===== 消息气泡 ===== */
+.message {
+    display: flex;
+    max-width: 80%;
+    animation: messageAppear 0.3s ease-out;
+}
+
+@keyframes messageAppear {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.message.user {
+    align-self: flex-end;
+}
+
+.message.ai {
+    align-self: flex-start;
+}
+
+.bubble {
+    padding: 18px 22px;
+    border-radius: 18px;
+    font-size: 15px;
+    line-height: 1.6;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    position: relative;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.message.user .bubble {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-bottom-right-radius: 5px;
+}
+
+.message.ai .bubble {
+    background: white;
+    color: #2c3e50;
+    border-bottom-left-radius: 5px;
+    border: 1px solid #eef2f7;
+}
+
+/* 箭头样式 */
+.message.user .bubble::after {
+    content: '';
+    position: absolute;
+    right: -8px;
+    top: 20px;
+    width: 0;
+    height: 0;
+    border-left: 10px solid #667eea;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+}
+
+.message.ai .bubble::before {
+    content: '';
+    position: absolute;
+    left: -8px;
+    top: 20px;
+    width: 0;
+    height: 0;
+    border-right: 10px solid white;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+}
+
+.message.ai .bubble::after {
+    content: '';
+    position: absolute;
+    left: -9px;
+    top: 20px;
+    width: 0;
+    height: 0;
+    border-right: 10px solid #eef2f7;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+}
+
+/* ===== 消息时间戳 ===== */
+.message-time {
+    font-size: 11px;
+    color: #95a5a6;
+    margin-top: 5px;
+    text-align: right;
+}
+
+.message.user .message-time {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* ===== 头像样式 ===== */
+.message-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    flex-shrink: 0;
+    overflow: hidden; /* 添加这行确保图片不会溢出圆形容器 */
+    background: transparent; /* 移除背景色 */
+}
+.message-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #fff; /* 添加白色边框使头像更突出 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 添加轻微阴影效果 */
+}
+
+
+.message.ai .message-avatar {
+    background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+    color: white;
+}
+
+.message.user .message-avatar {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    margin-right: 0;
+    margin-left: 12px;
+}
+
+.message-content {
+    flex: 1;
+}
+
+/* ========== 纳西妲专注模式专用样式 ========== */
+
+/* 1. 思考过程容器 */
+.thinking-box {
+    margin-bottom: 15px;
+    border: 1px solid #a8d5ba; /* 浅绿色边框 */
+    border-radius: 12px;
+    background: #f0f9f4; /* 极淡的绿色背景 */
+    overflow: hidden;
+}
+
+/* 2. 折叠条标题 */
+.thinking-box details summary {
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 13px;
+    color: #4a7c59; /* 深绿色文字 */
+    font-weight: 600;
+    background: rgba(168, 213, 186, 0.3);
+    list-style: none; /* 隐藏默认三角 */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s;
+}
+
+.thinking-box details summary:hover {
+    background: rgba(168, 213, 186, 0.5);
+}
+
+/* 3. 思考内容文本 */
+.thinking-content {
+    padding: 15px;
+    font-size: 13px;
+    color: #5c6b5d; /* 灰绿色 */
+    line-height: 1.6;
+    font-family: 'Consolas', monospace; /* 代码字体，更有极客感 */
+    border-top: 1px dashed #a8d5ba;
+    max-height: 300px;
+    overflow-y: auto;
+    background: #fff;
+}
+
+/* 4. 回答徽章 */
+.nahida-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #a8e063 0%, #56ab2f 100%); /* 草神绿渐变 */
+    color: white;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 5px rgba(86, 171, 47, 0.3);
+}
+
+/* 5. 纳西妲的回答正文 */
+.nahida-answer .markdown-content {
+    font-size: 15px;
+    color: #2c3e50;
+}
+
+/* 6. 自定义滚动条 (针对思考框) */
+.thinking-content::-webkit-scrollbar {
+    width: 6px;
+}
+.thinking-content::-webkit-scrollbar-thumb {
+    background: #a8d5ba;
+    border-radius: 3px;
+}

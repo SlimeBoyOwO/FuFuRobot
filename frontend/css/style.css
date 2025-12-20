@@ -1,0 +1,20 @@
+/* style.css — 只做引入，不写样式 */
+
+/* 基础样式、重置、全局变量、主题 */
+@import "reset.css";
+
+/* 页面布局（sidebar + chat） */
+@import "layout.css";
+
+/* 聊天界面相关样式 */
+@import "chat.css";
+
+/* 可复用组件样式 */
+@import "components.css";
+
+/* 工具类、状态和辅助样式 */
+@import "utilities.css";
+
+/*内容显示相关样式（Markdown、表格、图表等）*/
+@import "content-styles.css";
+

@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+pandas
+sqlalchemy
+pydantic
+python-dotenv 
+openai
+markdown
+requests

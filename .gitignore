@@ -1,0 +1,11 @@
+# 在项目根目录创建或编辑 .gitignore 文件
+# 添加以下内容
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.pyo
+*.so
+.Python
+backend/.env

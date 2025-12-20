@@ -1,0 +1,172 @@
+/* components.css - 可复用组件样式 */
+
+/* ===== Logo样式 ===== */
+.logo {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 40px;
+    text-align: center;
+    color: #3498db;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo::before {
+    content: "🤖";
+    font-size: 32px;
+}
+
+/* ===== 导航组件 ===== */
+.nav-group {
+    margin-bottom: 30px;
+}
+
+.nav-group h3 {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #95a5a6;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid transparent;
+}
+
+.nav-item:hover {
+    background: rgba(52, 152, 219, 0.2);
+    transform: translateX(5px);
+}
+
+.nav-item.active {
+    background: rgba(52, 152, 219, 0.3);
+    border-color: #3498db;
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+}
+
+/* ===== 提示框组件 ===== */
+.tips {
+    margin-top: auto;
+    background: rgba(0, 0, 0, 0.2); /* 更暗的背景 */
+    padding: 12px 16px;
+    border-radius: 8px;
+    border-left: 3px solid #2c3e50; /* 深色边框 */
+    font-size: 12px;
+    line-height: 1.4;
+    color: #bdc3c7;
+}
+
+.tips h4 {
+    font-size: 13px;
+    margin: 0 0 8px 0;
+    color: #7fb3d5;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.tips p {
+    margin: 0 0 8px 0;
+    color: #95a5a6;
+}
+
+.tips ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.tips li {
+    padding: 3px 0;
+    color: #95a5a6;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.tips li:last-child {
+    border-bottom: none;
+}
+
+/* 移动端适配 */
+@media (max-width: 1024px) {
+    .tips {
+        width: 100%;
+        margin-top: 15px;
+    }
+}
+
+/* ===== 状态指示器 ===== */
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #2ecc71;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* ===== 输入框组件 ===== */
+.input-box {
+    padding: 25px 30px;
+    /* 修改：背景半透明 */
+    background: rgba(255, 255, 255, 0.2);
+    /* 边框半透明 */
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.input-box input {
+    flex: 1;
+    padding: 16px 20px;
+    border: 2px solid #eef2f7;
+    border-radius: 50px;
+    font-size: 15px;
+    outline: none;
+    transition: all 0.3s ease;
+    background: rgba(248, 250, 252, 0.5);
+    color: #2c3e50;
+}
+
+.input-box button {
+    padding: 16px 35px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: 0.5px;
+}

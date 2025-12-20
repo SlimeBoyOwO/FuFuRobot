@@ -1,0 +1,36 @@
+/* reset.css - 重置浏览器默认样式和基础设置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif;
+    
+    /* 图片背景 */
+    background: url('../images/bg.jpg') no-repeat center center fixed;
+    background-size: cover;
+    
+    /* 添加遮罩层让内容更清晰 */
+    position: relative;
+    
+    /* 确保聊天框居中 */
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    color: #333;
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: -1;
+}

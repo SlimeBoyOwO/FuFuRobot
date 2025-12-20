@@ -1,0 +1,65 @@
+/* layout.css - 主要布局结构和容器样式 */
+
+/* ===== 主容器 ===== */
+.app-container {
+    display: flex;
+    width: 100%;
+    max-width: 1400px;
+    height: 90vh;
+    /* 改为 50% 不透明度的白色，让后面的 bg.jpg 透出来 */
+    background: rgba(255, 255, 255, 0.5); 
+    /* 建议添加一个背景模糊效果，让文字更清晰（毛玻璃特效） */
+    backdrop-filter: blur(10px); 
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+/* ===== 侧边栏布局 ===== */
+.sidebar {
+    width: 280px;
+    background: linear-gradient(180deg, rgba(44, 62, 80, 0.9) 0%, rgba(26, 37, 48, 0.9) 100%);
+    color: white;
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+}
+
+/* ===== 聊天区域布局 ===== */
+.chat-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: transparent; 
+    position: relative;
+}
+
+/* ===== 响应式设计 ===== */
+@media (max-width: 1024px) {
+    .app-container {
+        flex-direction: column;
+        height: 95vh;
+    }
+    
+    .sidebar {
+        width: 100%;
+        padding: 20px;
+        flex-direction: row;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    .app-container {
+        height: 100vh;
+        border-radius: 10px;
+    }
+}

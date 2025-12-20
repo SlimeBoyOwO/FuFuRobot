@@ -1,0 +1,12 @@
+（对于conda环境的用户）
+1. conda activate uv_wk
+
+（有uv环境的直接进入这一步）
+2. uv venv .venv
+
+（终端）
+3. .venv\Scripts\Activate.ps1 
+
+4. uv pip install -r requirements.txt
+
+在终端中直接输入，不使用.bat，可以避免uv在uv_wk中造分身

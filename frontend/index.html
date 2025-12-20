@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>芙芙</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+</head>
+<body>
+
+<div class="app-container">
+    <aside class="sidebar">
+        <div class="logo"> Your fufu</div>
+        
+        <div class="nav-group">
+            <h3>功能模式</h3>
+            <label class="nav-item active">
+                <input type="radio" name="mode" value="chat" checked>
+                <span>💬 芙芙 </span>
+            </label>
+            
+            <!-- 新增：纳西妲模式 -->
+            <label class="nav-item">
+                <input type="radio" name="mode" value="focus">
+                <span>🍃 纳西妲（附体芙芙）</span>
+            </label>
+            
+            <label class="nav-item">
+                <input type="radio" name="mode" value="text2sql">
+                <span>📊 数据库操作</span>
+            </label>
+        </div>
+
+        <div class="tips">
+            <h4>💡 提示:</h4>
+            <p>数据库模式下，您可以尝试输入：</p>
+            <ul>
+                <li>"查询所有学生"</li>
+                <li>"查询计算机学院的男生"</li>
+                <li>"统计各学院人数"</li>
+                <li>"插入X名2024级的学生"</li>
+                <li>"删除所有2024级的学生"</li>
+                <li>"查看计算机学院不同专业人数"</li>
+                <li>"查看学校招生人数变化"</li>
+            </ul>
+        </div>
+    </aside>
+
+    <main class="chat-area">
+        <div class="chat-header">芙芙</div>
+        
+        <!-- 注意：这里id改成了messagesBox（小写b） -->
+        <div class="messages-box" id="messagesBox">
+            <div class="message ai">
+                <div class="bubble">你好！我是芙宁娜。</div>
+            </div>
+        </div>
+
+        <div class="input-box">
+            <input type="text" id="userInput" placeholder="请输入您的指令..." autocomplete="off">
+            <button id="sendBtn">发送</button>
+        </div>
+    </main>
+</div>
+
+<script type="module">
+    const API_BASE_URL = 'http://127.0.0.1:8000/api';
+    
+    import('./js/main.js').then(module => {
+        console.log('JS模块加载成功', module);
+        
+        // 尝试不同的导入方式
+        let ChatApplication;
+        
+        if (module.default) {
+            // 如果是默认导出
+            ChatApplication = module.default;
+        } else if (module.ChatApplication) {
+            // 如果是命名导出
+            ChatApplication = module.ChatApplication;
+        } else {
+            // 尝试直接使用模块
+            ChatApplication = module;
+        }
+        
+        // 检查是否找到类
+        if (ChatApplication && typeof ChatApplication === 'function') {
+            console.log('找到 ChatApplication 类');
+            new ChatApplication();
+        } else {
+            console.error('ChatApplication 不是构造函数:', ChatApplication);
+            // 手动启动应用
+            initAppManually();
+        }
+    }).catch(error => {
+        console.error('模块加载失败:', error);
+        initAppManually();
+    });
+    
+    // 备选方案：如果模块加载失败，手动创建实例
+    function initAppManually() {
+        // 等待 DOM 加载完成
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                createChatAppInstance();
+            });
+        } else {
+            createChatAppInstance();
+        }
+    }
+    
+    function createChatAppInstance() {
+        alert('应用加载失败，请刷新页面重试');
+    }
+</script>
+</body>
+</html>
