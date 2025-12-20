@@ -9,3 +9,4 @@
 2025/12/12 修复了ai自身状态记忆参数Bug，使其可以正常记录。
 2025/12/13 添加了纳西妲模式，使用了deepseek模型的deepseek-reasoner模式，可以让机器人回答更加准确。
 2025/12/13 拆分了core.py 为chat_mode.py和db_mode.py,代码更加清晰。
+2025/12/20 将项目上传至github，并添加了readme.md文件，方便其他开发者使用。
