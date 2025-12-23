@@ -1,4 +1,5 @@
 # backend/llm/focus_mode.py
+import httpx 
 import requests
 import markdown
 import json
@@ -76,6 +77,87 @@ def get_nahida_response(user_input: str) -> dict:
             "html": f'<div class="error-message">{error_msg}</div>',
             "mode": "focus"
         }
+
+async def stream_nahida_response(user_input: str):
+    """
+    纳西妲深度思考模式的流式生成器
+    """
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {DEEPSEEK_API_KEY}"
+    }
+    
+    messages = [
+        {"role": "system", "content": NAHIDA_PROMPT},
+        {"role": "user", "content": user_input}
+    ]
+    
+    payload = {
+        "model": DEEPSEEK_REASONER_MODEL,
+        "messages": messages,
+        "stream": True,  # 必须开启流式
+        "max_tokens": 4096,
+        "temperature": 0.6
+    }
+    
+    try:
+        # 增加超时时间，DeepSeek R1 思考时间可能较长
+        timeout = httpx.Timeout(connect=10.0, read=120.0, write=10.0, pool=10.0)
+        
+        async with httpx.AsyncClient(timeout=timeout) as client:
+            async with client.stream("POST", DEEPSEEK_API_URL, headers=headers, json=payload) as response:
+                
+                if response.status_code != 200:
+                    error_msg = f"API Error: {response.status_code} - {response.reason_phrase}"
+                    # 发送错误事件给前端
+                    yield f"data: {json.dumps({'type': 'error', 'content': error_msg}, ensure_ascii=False)}\n\n"
+                    return
+
+                # 使用 aiter_lines() 逐行读取，并处理可能的空行
+                async for line in response.aiter_lines():
+                    line = line.strip() # 去除首尾空白
+                    
+                    if not line:
+                        continue # 跳过空行（心跳包）
+                        
+                    if line.startswith("data: "):
+                        json_str = line[6:]  # 去掉 'data: ' 前缀
+                        
+                        # 检查结束标记
+                        if json_str.strip() == "[DONE]":
+                            break
+                        
+                        try:
+                            chunk = json.loads(json_str)
+                            if "choices" not in chunk or len(chunk["choices"]) == 0:
+                                continue
+                                
+                            delta = chunk["choices"][0]["delta"]
+                            
+                            # A. 捕捉思考过程 (Reasoning Content)
+                            if "reasoning_content" in delta and delta["reasoning_content"]:
+                                packet = {
+                                    "type": "thinking", 
+                                    "content": delta["reasoning_content"]
+                                }
+                                yield f"data: {json.dumps(packet, ensure_ascii=False)}\n\n"
+                            
+                            # B. 捕捉最终回答 (Content)
+                            elif "content" in delta and delta["content"]:
+                                packet = {
+                                    "type": "answer", 
+                                    "content": delta["content"]
+                                }
+                                yield f"data: {json.dumps(packet, ensure_ascii=False)}\n\n"
+                                
+                        except json.JSONDecodeError:
+                            print(f"⚠️ JSON解析失败: {line}")
+                            continue
+                            
+    except Exception as e:
+        import traceback
+        traceback.print_exc() # 打印后端报错详情
+        yield f"data: {json.dumps({'type': 'error', 'content': str(e)}, ensure_ascii=False)}\n\n"
 
 def _format_nahida_html(reasoning: str, content: str) -> str:
     """

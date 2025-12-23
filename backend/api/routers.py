@@ -1,5 +1,6 @@
 # backend/api/routers.py
 from fastapi import APIRouter, HTTPException
+from fastapi.responses import StreamingResponse
 import datetime
 import os,sys
 import pandas as pd
@@ -13,8 +14,8 @@ from backend.database import (
 )
 
 from backend.llm import (
-    clear_chat_history, get_chat_history_length, analyze_data_for_chart,get_nahida_response,
-    get_chat_response, get_db_response
+    clear_chat_history, get_chat_history_length, analyze_data_for_chart,
+    get_nahida_response, get_chat_response, get_db_response,stream_nahida_response
 )
 
 from backend.config import DEEPSEEK_API_KEY
@@ -101,6 +102,36 @@ async def clear_history_endpoint(request: ClearHistoryRequest):
             }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"清除历史失败: {str(e)}")
+
+# 流式输出端口
+@router.post("/chat/stream")
+async def chat_stream_endpoint(request: ChatRequest):
+    """
+    流式输出接口
+    """
+    if request.mode == "focus":
+        # 添加响应头，防止浏览器缓冲
+        headers = {
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            "X-Accel-Buffering": "no" # 防止 Nginx 等代理服务器缓冲
+        }
+        
+        return StreamingResponse(
+            stream_nahida_response(request.message),
+            media_type="text/event-stream",
+            headers=headers 
+        )
+    else:
+        return StreamingResponse(
+            _simple_error_stream("当前模式不支持流式输出，请使用 /api/chat 接口"),
+            media_type="text/event-stream"
+        )
+
+async def _simple_error_stream(msg: str):
+    """辅助函数"""
+    import json
+    yield f"data: {json.dumps({'type': 'error', 'content': msg}, ensure_ascii=False)}\n\n"
 
 @router.post("/chat", response_model=ChatResponse)
 async def chat_endpoint(request: ChatRequest):
@@ -230,3 +261,4 @@ async def chat_endpoint(request: ChatRequest):
         result["html"] = f'<div class="error"><p>{error_msg}</p></div>'
     
     return result
+

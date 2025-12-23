@@ -178,72 +178,131 @@
     flex: 1;
 }
 
-/* ========== 纳西妲专注模式专用样式 ========== */
+/* ========== 纳西妲专注模式专用样式 (最终修正版) ========== */
 
 /* 1. 思考过程容器 */
 .thinking-box {
-    margin-bottom: 15px;
-    border: 1px solid #a8d5ba; /* 浅绿色边框 */
-    border-radius: 12px;
-    background: #f0f9f4; /* 极淡的绿色背景 */
+    margin-bottom: 20px;
+    border-radius: 8px;
+    background: #f6fffa; /* 极淡的薄荷绿背景 */
+    border: 1px solid #e2e8f0;
     overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+/* 展开时的样式 */
+.thinking-box[open] {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border-left: 3px solid #bbf7d0; /* 左侧绿色边框 */
+}
+
+/* 思考完成后的样式 */
+.thinking-box.completed[open] {
+    border-left-color: #4ade80; /* 完成后边框变深一点 */
 }
 
 /* 2. 折叠条标题 */
-.thinking-box details summary {
-    padding: 10px 15px;
+.thinking-box summary {
+    padding: 12px 16px;
     cursor: pointer;
     font-size: 13px;
-    color: #4a7c59; /* 深绿色文字 */
+    color: #64748b; /* 默认灰色 */
     font-weight: 600;
-    background: rgba(168, 213, 186, 0.3);
-    list-style: none; /* 隐藏默认三角 */
+    background: transparent;
+    list-style: none;
     display: flex;
     align-items: center;
     gap: 8px;
-    transition: background 0.2s;
+    user-select: none;
+    outline: none;
 }
 
-.thinking-box details summary:hover {
-    background: rgba(168, 213, 186, 0.5);
+/* 隐藏默认三角 */
+.thinking-box summary::-webkit-details-marker {
+    display: none;
+}
+
+/* 思考中/展开状态的标题 */
+.thinking-box[open] summary {
+    color: #16a34a; /* 草元素深绿 */
+    background: rgba(240, 253, 244, 0.5);
+    border-bottom: 1px solid #f0fdf4;
 }
 
 /* 3. 思考内容文本 */
 .thinking-content {
-    padding: 15px;
+    padding: 15px 20px;
     font-size: 13px;
-    color: #5c6b5d; /* 灰绿色 */
+    color: #475569; /* 蓝灰色文字 */
     line-height: 1.6;
-    font-family: 'Consolas', monospace; /* 代码字体，更有极客感 */
-    border-top: 1px dashed #a8d5ba;
+    font-family: 'JetBrains Mono', 'Consolas', monospace;
     max-height: 300px;
     overflow-y: auto;
-    background: #fff;
+    background: rgba(255, 255, 255, 0.5);
+    white-space: pre-wrap;
 }
 
-/* 4. 回答徽章 */
+/* 滚动条美化 */
+.thinking-content::-webkit-scrollbar { width: 6px; }
+.thinking-content::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+/* 4. 纳西妲回答区域容器 */
+.nahida-answer {
+    position: relative;
+    padding-top: 10px;
+    animation: fadeIn 0.5s ease-in;
+}
+
+/* 徽章样式 */
 .nahida-badge {
-    display: inline-block;
-    background: linear-gradient(135deg, #a8e063 0%, #56ab2f 100%); /* 草神绿渐变 */
-    color: white;
+    display: inline-flex;
+    align-items: center;
     font-size: 11px;
-    padding: 3px 10px;
-    border-radius: 20px;
+    font-weight: 700;
+    color: #15803d;
+    background: #dcfce7;
+    padding: 4px 10px;
+    border-radius: 12px;
     margin-bottom: 12px;
-    box-shadow: 0 2px 5px rgba(86, 171, 47, 0.3);
+    border: 1px solid #bbf7d0;
 }
 
-/* 5. 纳西妲的回答正文 */
+/* 5. 纳西妲专属 Markdown 配色覆盖 (覆盖 content-styles.css) */
+/* 确保这些样式只在 .nahida-answer 内部生效 */
+
 .nahida-answer .markdown-content {
-    font-size: 15px;
-    color: #2c3e50;
+    color: #334155;
 }
 
-/* 6. 自定义滚动条 (针对思考框) */
-.thinking-content::-webkit-scrollbar {
-    width: 6px;
+/* 标题下划线变绿 */
+.nahida-answer .markdown-content h1 { border-bottom-color: #86efac; }
+
+/* H2 左侧竖线变绿 */
+.nahida-answer .markdown-content h2::before { background: #4ade80; }
+
+/* 列表点变绿 */
+.nahida-answer .markdown-content li::marker { color: #22c55e; }
+
+/* 引用块变绿 */
+.nahida-answer .markdown-content blockquote {
+    border-left-color: #4ade80;
+    background: #f0fdf4;
+    color: #166534;
 }
-.thinking-content::-webkit-scrollbar-thumb {
-    background: #a8d5ba;
-    border-radius: 3px;
+
+/* 链接变绿 */
+.nahida-answer .markdown-content a {
+    color: #16a34a;
+    border-bottom-color: #16a34a;
+}
+
+/* 强调文字变绿背景 */
+.nahida-answer .markdown-content strong {
+    color: #052e16;
+    background: linear-gradient(120deg, rgba(134, 239, 172, 0.4) 0%, rgba(134, 239, 172, 0.1) 100%);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
 }

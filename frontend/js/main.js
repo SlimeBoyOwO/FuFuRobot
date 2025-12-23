@@ -7,7 +7,7 @@ import {
     setCurrentMode
 } from './dom-manager.js';
 import { addMessage, showLoading, removeLoading,createAvatar } from './message-manager.js';
-import { sendChatMessage } from './api-service.js';
+import { sendChatMessage, sendChatStream } from './api-service.js'; 
 import { generateTable } from './table-renderer.js';
 import { renderChart, preprocessChartData } from './chart-renderer.js';
 
@@ -71,30 +71,140 @@ class ChatApplication {
         const text = userInput.value.trim();
         if (!text) return;
 
-        // 显示用户消息
+        const mode = getCurrentMode();
+
+        // 1. 显示用户消息
         addMessage(text, 'user');
         userInput.value = '';
         userInput.focus();
 
-        // 显示加载状态
-        const loadingId = showLoading();
-
-        try {
-            const mode = getCurrentMode();
-            const resData = await sendChatMessage(text, mode);
-
-            // 移除加载状态
-            removeLoading(loadingId);
-
-            // 处理AI响应
-            this.handleAIResponse(resData);
-
-        } catch (error) {
-            this.handleError(error, loadingId);
+        // 2. 判断模式
+        if (mode === 'focus') {
+            // === 深度思考模式走流式处理 ===
+            await this.handleStreamFocusMode(text);
+        } else {
+            // === 其他模式走原来的逻辑 ===
+            const loadingId = showLoading();
+            try {
+                const resData = await sendChatMessage(text, mode);
+                removeLoading(loadingId);
+                this.handleAIResponse(resData);
+            } catch (error) {
+                this.handleError(error, loadingId);
+            }
         }
 
         this.scrollToBottom();
     }
+
+    // 处理流式聚焦模式的聊天响应
+    // @param {string} text - 用户输入的文本内容
+    async handleStreamFocusMode(text) {
+            // 1. 手动创建消息容器
+            const messageContainer = document.createElement('div');
+            messageContainer.className = 'message ai';
+            
+            // 创建头像
+            const avatar = createAvatar('ai');
+            
+            // 创建内容区
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+
+            // 创建气泡
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble';
+            
+            // =================================================
+            // A. 创建思考过程容器 (使用 CSS 类控制样式)
+            // =================================================
+            const thinkingDetails = document.createElement('details');
+            thinkingDetails.className = 'thinking-box'; // 使用 CSS 类
+            thinkingDetails.open = true; // 默认展开
+            
+            const thinkingSummary = document.createElement('summary');
+            thinkingSummary.textContent = '🍃 纳西妲来帮忙了...';
+            
+            const thinkingContent = document.createElement('div');
+            thinkingContent.className = 'thinking-content';
+            
+            thinkingDetails.appendChild(thinkingSummary);
+            thinkingDetails.appendChild(thinkingContent);
+            
+            // =================================================
+            // B. 创建最终回答容器 (纳西妲主题)
+            // =================================================
+            const answerWrapper = document.createElement('div');
+            answerWrapper.className = 'nahida-answer'; // 包裹层，用于应用绿色主题
+            
+            // 可选：添加一个小徽章
+            const badge = document.createElement('div');
+            badge.className = 'nahida-badge';
+            badge.textContent = '小吉祥草王的解答';
+            answerWrapper.appendChild(badge);
+
+            const answerDiv = document.createElement('div');
+            answerDiv.className = 'markdown-content'; // 内容层
+            answerWrapper.appendChild(answerDiv);
+            
+            // 组装DOM
+            bubble.appendChild(thinkingDetails);
+            bubble.appendChild(answerWrapper);
+            contentDiv.appendChild(bubble);
+            messageContainer.appendChild(avatar);
+            messageContainer.appendChild(contentDiv);
+            
+            messagesBox.appendChild(messageContainer);
+            this.scrollToBottom();
+
+            // 2. 开始流式请求
+            let fullThinking = '';
+            let fullAnswer = '';
+
+            await sendChatStream(
+                text, 
+                'focus', 
+                'default', // sessionId
+                (data) => {
+                    // === 收到数据包的回调 ===
+                    if (data.type === 'thinking') {
+                        // 更新思考内容
+                        fullThinking += data.content;
+                        thinkingContent.textContent = fullThinking;
+                        
+                    } else if (data.type === 'answer') {
+                        // 思考结束
+                        thinkingSummary.textContent = '🍃 纳西妲思考好了';
+                        thinkingDetails.classList.add('completed'); // 添加完成样式
+                        
+                        // 更新回答内容
+                        fullAnswer += data.content;
+                        // 使用 marked 解析 Markdown
+                        if (typeof marked !== 'undefined') {
+                            answerDiv.innerHTML = marked.parse(fullAnswer);
+                        } else {
+                            answerDiv.textContent = fullAnswer; // 降级处理
+                        }
+                    } else if (data.type === 'error') {
+                        answerDiv.innerHTML += `<br><span style="color:red">[错误: ${data.content}]</span>`;
+                    }
+                    
+                    // 实时滚动到底部
+                    this.scrollToBottom();
+                },
+                () => {
+                    // === 完成回调 ===
+                    console.log('流式输出结束');
+                    if (!fullAnswer) {
+                        thinkingSummary.textContent = '🍃 思考结束 (无回答)';
+                    }
+                },
+                (error) => {
+                    // === 错误回调 ===
+                    answerDiv.innerHTML += `<br><span style="color:red">[网络错误: ${error.message}]</span>`;
+                }
+            );
+        }
 
     handleAIResponse(resData) {
         // 创建AI消息容器

@@ -367,7 +367,7 @@ def _get_chart_by_requirements(df, requirements, numeric_cols, categorical_cols,
         return _get_smart_chart_config(df, "", numeric_cols, categorical_cols, datetime_cols)
 
 def _get_smart_chart_config(df, sql, numeric_cols, categorical_cols, datetime_cols):
-    """智能图表推荐（原有逻辑）"""
+    """智能图表推荐"""
     sql_lower = sql.lower()
     
     # 规则1: 分组统计查询 -> 柱状图
