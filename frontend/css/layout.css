@@ -6,13 +6,13 @@
     width: 100%;
     max-width: 1400px;
     height: 90vh;
-    /* 改为 50% 不透明度的白色，让后面的 bg.jpg 透出来 */
-    background: rgba(255, 255, 255, 0.5); 
+    /* 改为 10% 不透明度的白色，*/
+    background: rgba(255, 255, 255, 0.2); 
     /* 建议添加一个背景模糊效果，让文字更清晰（毛玻璃特效） */
     backdrop-filter: blur(10px); 
     -webkit-backdrop-filter: blur(10px);
     border-radius: 20px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
     overflow: hidden;
 }
 

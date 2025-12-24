@@ -9,7 +9,7 @@ body {
     font-family: 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif;
     
     /* 图片背景 */
-    background: url('../images/bg.jpg') no-repeat center center fixed;
+    background: url('../images/bg.png') no-repeat center center fixed;
     background-size: cover;
     
     /* 添加遮罩层让内容更清晰 */

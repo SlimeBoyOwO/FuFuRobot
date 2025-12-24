@@ -7,9 +7,13 @@ from typing import Dict, List, Any
 from backend.config import BASE_DIR
 
 ## 设置各类记忆的最大保存数量
-fact_num=20
-lastly_num=20
-aistate_num=40
+# AI记住的用户长期事实
+fact_num=40
+# AI记住的用户最近动态
+lastly_num=40
+# AI记住的自己的AI状态信息
+aistate_num=80
+# AI记住的聊天上下文（10个对话，20条）
 savedcontext_num=20
 
 # 定义记忆文件路径

@@ -1,9 +1,15 @@
-# <span style="color:#1E90FF;text-shadow: 0 0 10px rgba(30,144,255,0.5);">FUFURobot</span>
+<div style="text-align: center; padding: 40px 0; min-height: 200px;">
+  <span style="color:#1E90FF;text-shadow: 0 0 10px rgba(30,144,255,0.5); font-size: 2.5rem;">
+    FUFURobot
+  </span>
+  <p style="margin-top: 20px; color: #666;">✨ 𝓕𝓾𝓯𝓾 𝓲𝓼 𝓼𝓸 𝓬𝓾𝓽𝓮! ✨</p>
+  <p style="color: #888;">🌟 **芙·芙·可·爱·捏！** 🌙.</p>
+</div>
 
-![FUFU](./frontend/images/fufu2.png)
 
-✨ 𝓕𝓾𝓯𝓾 𝓲𝓼 𝓼𝓸 𝓬𝓾𝓽𝓮! ✨
-🌟 **芙·芙·可·爱·捏！** 🌙
+![FUFU](./ShowImages/title.png)
+
+
 ***
 ## 项目概括
 <span style="background: linear-gradient(90deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #fee140 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
@@ -80,4 +86,4 @@ FRONTEND_PORT=8080
 
 邮箱：1459134925@qq.com
 
-![FUFU](./frontend/images/fufu1.png)
+![Call me](./ShowImages/end.png)
