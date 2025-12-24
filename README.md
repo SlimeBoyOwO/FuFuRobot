@@ -1,7 +1,17 @@
 <div style="text-align: center; padding: 40px 0; min-height: 200px;">
-  <span style="color:#1E90FF;text-shadow: 0 0 10px rgba(30,144,255,0.5); font-size: 2.5rem;">
+  <!-- 主要标题 -->
+  <h1 style="
+    color: #1E90FF;
+    text-shadow: 0 0 15px rgba(30,144,255,0.6), 0 0 30px rgba(30,144,255,0.3);
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin: 0;
+    padding: 10px 0;
+    letter-spacing: 2px;
+    font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+  ">
     FUFURobot
-  </span>
+  </h1>
   <p style="margin-top: 20px; color: #666;">✨ 𝓕𝓾𝓯𝓾 𝓲𝓼 𝓼𝓸 𝓬𝓾𝓽𝓮! ✨</p>
   <p style="color: #888;">🌟 **芙·芙·可·爱·捏！** 🌙.</p>
 </div>
