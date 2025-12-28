@@ -43,8 +43,8 @@ export function useCharts() {
 
   // 柱状图配置
   const generateBarChartOption = (data: any[], config: ChartOption) => {
-    const xAxis = config.xAxis || getDefaultXAxis(data)
-    const yAxis = config.yAxis || getDefaultYAxis(data)
+    const xAxis = config.x_axis || getDefaultXAxis(data)
+    const yAxis = config.y_axis || getDefaultYAxis(data)
     const title = config.title || `${yAxis} 按 ${xAxis} 统计`
 
     // 提取数据
@@ -158,18 +158,18 @@ export function useCharts() {
 
   // 折线图配置
   const generateLineChartOption = (data: any[], config: ChartOption) => {
-    const xAxis = config.xAxis || getDefaultXAxis(data)
-    const yAxis = config.yAxis || getDefaultYAxis(data)
-    const title = config.title || `${yAxis} 趋势图`
+    const xField = config.x_axis || getDefaultXAxis(data) // 改为 xField 表示X轴字段名
+    const yField = config.y_axis || getDefaultYAxis(data) // 改为 yField 表示Y轴字段名
+    const title = config.title || `${yField} 趋势图`
 
-    // 提取数据
+    // 提取数据 - 使用正确的字段名
     const xData = data.map((item) => {
-      const value = item[xAxis]
+      const value = item[xField] // 使用 xField 作为键
       return value !== null && value !== undefined ? String(value) : '未知'
     })
 
     const yData = data.map((item) => {
-      const value = item[yAxis]
+      const value = item[yField] // 使用 yField 作为键
       return convertToNumber(value)
     })
 
@@ -206,14 +206,14 @@ export function useCharts() {
       },
       yAxis: {
         type: 'value',
-        name: yAxis,
+        name: yField, // 使用 yField 作为Y轴名称
         axisLabel: {
           formatter: (value: number) => formatNumber(value),
         },
       },
       series: [
         {
-          name: yAxis,
+          name: yField, // 使用 yField 作为系列名称
           type: 'line',
           data: yData,
           smooth: true,
@@ -370,8 +370,8 @@ export function useCharts() {
 
   // 散点图配置
   const generateScatterChartOption = (data: any[], config: ChartOption) => {
-    const xAxis = config.xAxis || getDefaultXAxis(data)
-    const yAxis = config.yAxis || getDefaultYAxis(data)
+    const xAxis = config.x_axis || getDefaultXAxis(data)
+    const yAxis = config.y_axis || getDefaultYAxis(data)
     const title = config.title || `${yAxis} 与 ${xAxis} 关系`
 
     // 提取数据

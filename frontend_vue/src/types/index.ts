@@ -41,6 +41,8 @@ export interface ChartOption {
   title?: string
   xAxis?: string
   yAxis?: string | string[]
+  x_axis?: string
+  y_axis?: string | string[]
   name_col?: string
   value_col?: string | string[]
   color?: string
